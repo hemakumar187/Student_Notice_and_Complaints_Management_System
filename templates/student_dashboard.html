@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+/* STATIC DARK-LIGHT BACKGROUND */
+body{
+    min-height:100vh;
+    padding:40px;
+    background: linear-gradient(135deg, #2c3e50, #bdc3c7);
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+.header h2{color:white;font-size:32px;font-weight:800;}
+.logout{
+    padding:10px 26px;
+    background: linear-gradient(135deg,#ff6a00,#ee0979);
+    color:white;
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:600;
+    transition:0.4s;
+}
+.logout:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(255,75,92,0.6);
+}
+
+/* NOTICE CONTAINER */
+.notice-container{
+    background: rgba(255,255,255,0.9); /* Transparent light white */
+    border-radius:25px;
+    padding:30px;
+    max-height:500px;
+    overflow-y:auto;
+    box-shadow:0 8px 25px rgba(0,0,0,0.2);
+}
+.notice-container h3{
+    color:#2c3e50;
+    font-size:26px;
+    margin-bottom:20px;
+}
+
+/* NOTICE CARD */
+.notice{
+    background: rgba(255,255,255,0.95);
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:15px;
+    color:#333;
+    cursor:pointer;
+    transition:0.3s;
+}
+.notice:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+.notice h4{font-size:18px;margin-bottom:8px;}
+.notice p{
+    font-size:14px;
+    opacity:0.9;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.notice small{font-size:12px;opacity:0.7;}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:500px;
+    border-radius:20px;
+    padding:30px;
+    max-height:80vh;
+    overflow-y:auto;
+}
+.modal-content h3{
+    margin-bottom:15px;
+    color:#2c3e50;
+}
+.modal-content p{
+    color:#555;
+    line-height:1.6;
+}
+.close{
+    margin-top:20px;
+    display:inline-block;
+    color:#ff416c;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* BOTTOM BUTTONS */
+.bottom-actions{
+    margin-top:35px;
+    display:flex;
+    justify-content:center;
+    gap:30px;
+}
+.action-btn{
+    padding:16px 35px;
+    border-radius:40px;
+    font-size:16px;
+    font-weight:600;
+    color:white;
+    text-decoration:none;
+    transition:0.4s;
+}
+.complaint{
+    background: linear-gradient(135deg,#3498db,#2980b9);
+}
+.feedback{
+    background: linear-gradient(135deg,#e74c3c,#c0392b);
+}
+.action-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>Student Dashboard</h2>
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<!-- NOTICES -->
+<div class="notice-container">
+    <h3><i class="fas fa-bullhorn"></i> Latest Notices</h3>
+
+    {% for n in notices %}
+    <div class="notice" onclick="openModal('{{ n.title }}', `{{ n.message }}`)">
+        <h4>{{ n.title }}</h4>
+        <p>{{ n.message }}</p>
+        <small>{{ n.date }}</small>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- BOTTOM BUTTONS -->
+<div class="bottom-actions">
+    <a href="/student_complaint" class="action-btn complaint">
+        <i class="fas fa-exclamation-circle"></i> Complaint
+    </a>
+    <a href="/student_feedback" class="action-btn feedback">
+        <i class="fas fa-comment"></i> Feedback
+    </a>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="noticeModal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 id="modalTitle"></h3>
+        <p id="modalMessage"></p>
+        <span class="close" onclick="closeModal()">Close</span>
+    </div>
+</div>
+
+<script>
+function openModal(title, message){
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalMessage").innerText = message;
+    document.getElementById("noticeModal").style.display = "flex";
+}
+
+function closeModal(){
+    document.getElementById("noticeModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
