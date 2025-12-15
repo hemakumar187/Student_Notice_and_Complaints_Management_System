@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>View Feedback</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#141e30,#243b55);
+    padding:30px;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+.header h2{
+    color:#fff;
+    font-size:30px;
+    font-weight:700;
+}
+.header a{
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:white;
+    padding:12px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    transition:.3s;
+}
+.header a:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(0,114,255,.6);
+}
+
+/* FEEDBACK GRID */
+.feedback-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(30px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* FEEDBACK CARD */
+.feedback-card{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 25px 60px rgba(0,0,0,.7);
+    transition:.3s;
+    color:#fff;
+}
+.feedback-card:hover{
+    transform:translateY(-6px);
+}
+
+/* MESSAGE */
+.feedback-card p{
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:15px;
+    color:#e6e6e6;
+}
+
+/* FOOTER */
+.feedback-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:#00c6ff;
+}
+.feedback-footer i{
+    margin-right:5px;
+}
+
+/* EMPTY */
+.empty{
+    color:#fff;
+    font-size:18px;
+    text-align:center;
+    grid-column:1/-1;
+    padding:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2><i class="fas fa-comments"></i> Student Feedback</h2>
+    <a href="/admin_dashboard">← Dashboard</a>
+</div>
+
+<div class="feedback-container">
+{% if feedbacks %}
+    {% for fb in feedbacks %}
+    <div class="feedback-card">
+        <p>"{{ fb.message }}"</p>
+        <div class="feedback-footer">
+            <span>
+                <i class="fas fa-user"></i> {{ fb.student_email }}
+            </span>
+            <span>
+                <i class="fas fa-clock"></i>
+                {% if fb.date is string %}
+                    {{ fb.date }}
+                {% else %}
+                    {{ fb.date.strftime('%Y-%m-%d %H:%M') }}
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="empty">No feedback available</div>
+{% endif %}
+</div>
+
+</body>
+</html>

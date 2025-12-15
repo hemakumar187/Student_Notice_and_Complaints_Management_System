@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Complaints</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f4; padding:20px; }
+        .complaint { background:white; padding:15px; margin-bottom:15px; border-radius:10px; box-shadow:0 0 5px #ccc; }
+        h3 { margin:0; }
+        a { text-decoration:none; color:white; padding:5px 10px; border-radius:5px; margin-right:5px; }
+        .btn-pending { background:#ffc107; }
+        .btn-resolved { background:#28a745; }
+    </style>
+</head>
+<body>
+
+<h2>All Complaints</h2>
+<a href="/admin_dashboard">Back to Dashboard</a>
+
+{% for comp in complaints %}
+<div class="complaint">
+    <h3>{{ comp.title }} - {{ comp.status }}</h3>
+    <p>{{ comp.message }}</p>
+    <small>By: {{ comp.student_email }} | {{ comp.date.strftime('%Y-%m-%d %H:%M') }}</small><br><br>
+    <a href="/update_complaint/{{ comp._id }}/Pending" class="btn-pending">Pending</a>
+    <a href="/update_complaint/{{ comp._id }}/Resolved" class="btn-resolved">Resolved</a>
+</div>
+{% endfor %}
+
+</body>
+</html>

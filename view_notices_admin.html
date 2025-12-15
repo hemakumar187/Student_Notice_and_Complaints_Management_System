@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>All Notices</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    padding:40px 20px;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+.header h2{
+    color:#fff;
+    font-size:30px;
+    font-weight:800;
+}
+.header a{
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:30px;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    transition:.3s;
+}
+.header a:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(0,114,255,.6);
+}
+
+/* DELETE ALL */
+.delete-all{
+    display:block;
+    width:max-content;
+    margin:0 auto 25px auto;
+    background:linear-gradient(135deg,#ff416c,#ff4b2b);
+    color:white;
+    padding:12px 25px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+.delete-all:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(255,75,43,.6);
+}
+
+/* NOTICE CARD */
+.notice{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 25px 60px rgba(0,0,0,.7);
+    animation:fadeIn .6s ease;
+    position:relative;
+}
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(30px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.notice h4{
+    color:#fff;
+    font-size:22px;
+    margin-bottom:10px;
+}
+.notice p{
+    color:#ddd;
+    line-height:1.6;
+}
+.notice small{
+    color:#bbb;
+    display:block;
+    margin-top:10px;
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    color:white;
+    background:linear-gradient(135deg,#ff416c,#ff4b2b);
+    padding:10px 14px;
+    border-radius:50%;
+    text-decoration:none;
+    transition:.3s;
+}
+.delete-btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 8px 25px rgba(255,75,43,.7);
+}
+
+/* EMPTY */
+.empty{
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2><i class="fas fa-bullhorn"></i> All Notices</h2>
+    <a href="/admin_dashboard">← Dashboard</a>
+</div>
+
+<a href="/delete_all_notices" class="delete-all"
+   onclick="return confirm('Delete ALL notices?')">
+   <i class="fas fa-trash"></i> Delete All Notices
+</a>
+
+{% if notices %}
+    {% for notice in notices %}
+    <div class="notice">
+        <a href="/delete_notice/{{ notice._id }}" class="delete-btn"
+           onclick="return confirm('Delete this notice?')">
+            <i class="fas fa-trash"></i>
+        </a>
+
+        <h4>{{ notice.title }}</h4>
+        <p>{{ notice.message }}</p>
+        <small>{{ notice.date }}</small>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="empty">No notices available</div>
+{% endif %}
+
+</body>
+</html>

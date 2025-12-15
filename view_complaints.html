@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>View Complaints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#141e30,#243b55);
+    padding:30px;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+.header h2{
+    color:#fff;
+    font-size:30px;
+    font-weight:700;
+}
+.header a{
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:white;
+    padding:12px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    transition:.3s;
+}
+.header a:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(0,114,255,.6);
+}
+
+/* TABLE CONTAINER */
+.table-container{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 25px 60px rgba(0,0,0,.7);
+    animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(30px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    color:#fff;
+}
+
+th{
+    text-align:left;
+    padding:14px;
+    font-weight:600;
+    color:#00c6ff;
+    border-bottom:1px solid rgba(255,255,255,.2);
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    vertical-align:top;
+}
+
+/* STATUS */
+.status{
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    display:inline-block;
+}
+.pending{
+    background:rgba(255,193,7,.25);
+    color:#ffc107;
+}
+.resolved{
+    background:rgba(40,167,69,.25);
+    color:#28a745;
+}
+
+/* RESOLVE BUTTON */
+.resolve-btn{
+    display:inline-block;
+    margin-left:10px;
+    padding:7px 14px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#28a745,#20c997);
+    color:white;
+    font-size:13px;
+    text-decoration:none;
+    transition:.3s;
+}
+.resolve-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 8px 25px rgba(40,167,69,.6);
+}
+
+/* EMPTY */
+.empty{
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    padding:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2><i class="fas fa-exclamation-circle"></i> Student Complaints</h2>
+    <a href="/admin_dashboard">← Dashboard</a>
+</div>
+
+<div class="table-container">
+{% if complaints %}
+<table>
+    <tr>
+        <th>Student Email</th>
+        <th>Complaint</th>
+        <th>Status</th>
+        <th>Date</th>
+    </tr>
+
+    {% for c in complaints %}
+    <tr>
+        <td>{{ c.email }}</td>
+        <td>{{ c.message }}</td>
+        <td>
+            {% if c.status == "Pending" %}
+                <span class="status pending">Pending</span>
+                <a href="/update_complaint/{{ c._id }}" class="resolve-btn">
+                    Resolve
+                </a>
+            {% else %}
+                <span class="status resolved">Resolved</span>
+            {% endif %}
+        </td>
+        <td>
+            {% if c.date is string %}
+                {{ c.date }}
+            {% else %}
+                {{ c.date.strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <div class="empty">No complaints available</div>
+{% endif %}
+</div>
+
+</body>
+</html>
